@@ -1,0 +1,33 @@
+.weather {
+  position: relative;
+  border: 1px solid #bbb;
+  margin: 5px;
+  padding: 0 10px;
+  min-width: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &:hover .delete-weather-btn {
+    display: block;
+  }
+}
+
+.delete-weather-btn {
+  display: none;
+  position: absolute;
+  right: -5px;
+  top: -10px;
+  border: 1px solid red;
+  border-radius: 10px;
+  color: red;
+  height: 20px;
+  line-height: 20px;
+  text-align: center;
+  cursor: pointer;
+  background: white;
+  padding: 0 5px;
+  &:focus {
+    outline: none;
+  }
+}

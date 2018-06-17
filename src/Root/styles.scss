@@ -1,0 +1,10 @@
+.dashboard-container {
+  width: 550px;
+  padding: 10px;
+  margin: auto;
+  height: 90%;
+  overflow-y: auto;
+  border: 2px solid black;
+  display: flex;
+  flex-direction: column;
+}
