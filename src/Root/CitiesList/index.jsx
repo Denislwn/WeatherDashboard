@@ -1,34 +1,54 @@
-import React from 'react'
+import React from 'react';
 import connect from 'react-redux/es/connect/connect';
 import classNames from 'classnames/bind';
 
 import City from '../City';
-import {mapToArr} from '../../helpers';
+import {getCitiesSelector} from '../../selectors/citiesSelector';
 import styles from './styles.scss';
 
-let cx = classNames.bind(styles);
+const cx = classNames.bind(styles);
 
 class CitiesList extends React.Component {
-    citiesList;
 
-    render() {
-        let {cities} = this.props;
+    closeListener = () => {
+        const {cities} = this.props;
+        localStorage.setItem('cities', JSON.stringify(cities));
+    };
+
+    componentWillMount() {
+        window.addEventListener('beforeunload', this.closeListener);
+    }
+
+    getCitiesList = (cities) => {
+        let citiesList;
         if (cities.length > 0) {
-            this.citiesList = cities.map(city => {
-                    return <City key={city.id} city={city}/>
-                }
+            citiesList = cities.map(city => (
+                    <City key={city.id}
+                          city={city}/>
+                )
             );
         } else {
-            this.citiesList = <div className={cx('dashboard-placeholder')}>Dashboard is empty</div>;
+            citiesList = <div className={cx('dashboard-placeholder')}>Dashboard is empty</div>;
         }
+        return citiesList;
+    };
+
+    render() {
+        const {cities} = this.props;
+        const citiesList = this.getCitiesList(cities);
+
         return (
             <div className={cx('dashboard')}>
-                {this.citiesList}
+                {citiesList}
             </div>
         );
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('beforeunload', this.closeListener);
     }
 }
 
 export default connect(state => ({
-    cities: mapToArr(state.cities.cities)
+    cities: getCitiesSelector(state)
 }))(CitiesList);

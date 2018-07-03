@@ -7,3 +7,8 @@ export function arrToMap(arr, DataRecord = OrderedMap) {
 export function mapToArr(obj) {
     return obj.valueSeq().toArray();
 }
+
+export function getCityTemp(temp) {
+    const cityTemp = Math.round(temp);
+    return (cityTemp > 0) ? `+${cityTemp}` : cityTemp;
+}

@@ -1,8 +1,10 @@
 import {OrderedMap, Record} from 'immutable';
 
-import {ADD_CITY, DELETE_CITY, START,
-        SUCCESS, FAIL, NOT_FOUND,
-        CITY_ADDED, RESET_FAIL} from '../constants';
+import {
+    ADD_CITY, DELETE_CITY, START,
+    SUCCESS, FAIL, NOT_FOUND,
+    CITY_ADDED, RESET_FAIL
+} from '../constants';
 import {arrToMap} from '../helpers';
 
 const CityRecord = Record({
@@ -15,13 +17,13 @@ const CityRecord = Record({
 const ReducerState = Record({
     isLoading: false,
     fail: null,
-    cities: new OrderedMap({})
+    cities: arrToMap(JSON.parse(localStorage.getItem('cities')), CityRecord)
 });
 
 const defaultState = new ReducerState();
 
 export default (weatherState = defaultState, actionTypeResponse) => {
-    const {type, data, id: cityId} = actionTypeResponse;
+    const {type, response: data, id: cityId} = actionTypeResponse;
     switch (type) {
         case ADD_CITY + START: {
             return weatherState.set('isLoading', true)
@@ -41,11 +43,11 @@ export default (weatherState = defaultState, actionTypeResponse) => {
                 .set('isLoading', false);
         }
         case ADD_CITY + FAIL: {
-            if (Number(data.cod) === 404) {
+            if (data.status === 404) {
                 return weatherState.set('fail', NOT_FOUND)
                     .set('isLoading', false);
             }
-            return weatherState.set('isLoading', false);
+            break;
         }
         case DELETE_CITY: {
             return weatherState.deleteIn(['cities', cityId]);

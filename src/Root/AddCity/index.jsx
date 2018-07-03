@@ -2,11 +2,11 @@ import React from 'react';
 import connect from 'react-redux/es/connect/connect';
 import classNames from 'classnames/bind';
 
-import {addCity, resetFail} from '../../AC/weather';
-import styles from './styles.scss';
+import {addCity, resetFail} from '../../AC/city';
 import {NOT_FOUND, CITY_ADDED} from '../../constants';
+import styles from './styles.scss';
 
-let cx = classNames.bind(styles);
+const cx = classNames.bind(styles);
 
 class AddCity extends React.Component {
 
@@ -36,9 +36,7 @@ class AddCity extends React.Component {
         this.props.addCity(this.state.cityName);
     };
 
-    addButtonValid() {
-        return this.state.cityName ? null : true;
-    }
+    addButtonValid = () => this.state.cityName ? null : true;
 
     getClearButton() {
         if (this.state.cityName) {
@@ -62,9 +60,7 @@ class AddCity extends React.Component {
         }
     }
 
-    getBtnClass() {
-        return this.state.cityName ? 'active-btn' : 'disabled-btn';
-    }
+    getBtnClass = () => this.state.cityName ? 'active-btn' : 'disabled-btn';
 
     resetFailErr() {
         const {fail} = this.props;
@@ -82,7 +78,7 @@ class AddCity extends React.Component {
                        className={cx('input-field')}
                        value={this.state.cityName}
                        onChange={this.handleChangeCityName}/>
-                <button type="submit"
+                <button type='submit'
                         className={cx(this.getBtnClass())}
                         disabled={this.addButtonValid()}>Add
                 </button>
