@@ -1,4 +1,4 @@
-import {Record} from 'immutable';
+import {Record, OrderedMap} from 'immutable';
 
 import {ADD_CITY, DELETE_CITY, START, SUCCESS, END_LOADING} from '../constants';
 import {arrToMap} from '../helpers';
@@ -12,7 +12,7 @@ const CityRecord = Record({
 
 const ReducerState = Record({
     isLoading: false,
-    cities: arrToMap(JSON.parse(localStorage.getItem('cities')), CityRecord)
+    cities: localStorage.getItem('cities') ? arrToMap(JSON.parse(localStorage.getItem('cities')), CityRecord) : new OrderedMap({})
 });
 
 const defaultState = new ReducerState();
