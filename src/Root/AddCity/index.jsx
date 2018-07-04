@@ -58,10 +58,9 @@ class AddCity extends React.Component {
     getBtnClass = () => this.props.inputText ? 'active-btn' : 'disabled-btn';
 
     resetFailErr() {
-        const {fail} = this.props;
-        if (fail) {
-            this.props.resetFail();
-        }
+        const {fail, resetFail} = this.props;
+        if (fail)
+            resetFail();
     }
 
     render() {
