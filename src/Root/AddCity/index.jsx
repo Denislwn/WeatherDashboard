@@ -2,7 +2,8 @@ import React from 'react';
 import connect from 'react-redux/es/connect/connect';
 import classNames from 'classnames/bind';
 
-import {addCity, resetFail} from '../../AC/city';
+import {addCity} from '../../AC/city';
+import {inputFill, resetAddInput, resetFail} from '../../AC/addCityInput';
 import {NOT_FOUND, CITY_ADDED} from '../../constants';
 import styles from './styles.scss';
 
@@ -10,36 +11,30 @@ const cx = classNames.bind(styles);
 
 class AddCity extends React.Component {
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            cityName: ''
-        }
-    }
-
     handleChangeCityName = event => {
         const inputValue = event.target.value;
         if (/^[a-zA-Z0-9]+$|^$/.test(inputValue)) {
-            this.setState({cityName: inputValue});
+            this.props.inputFill(inputValue);
             this.resetFailErr();
         }
     };
 
     handleClearInputField = () => {
-        this.setState({cityName: ''});
+        this.props.resetAddInput();
         this.resetFailErr();
     };
 
     handleSubmit = event => {
         event.preventDefault();
-        this.props.addCity(this.state.cityName);
+        const {addCity, inputText} = this.props;
+        addCity(inputText);
     };
 
-    addButtonValid = () => this.state.cityName ? null : true;
+    addButtonValid = () => this.props.inputText ? null : true;
 
     getClearButton() {
-        if (this.state.cityName) {
+        const {inputText} = this.props;
+        if (inputText) {
             return <button onClick={this.handleClearInputField}
                            className={cx('delete-btn')}>Clear</button>;
         }
@@ -60,7 +55,7 @@ class AddCity extends React.Component {
         }
     }
 
-    getBtnClass = () => this.state.cityName ? 'active-btn' : 'disabled-btn';
+    getBtnClass = () => this.props.inputText ? 'active-btn' : 'disabled-btn';
 
     resetFailErr() {
         const {fail} = this.props;
@@ -76,7 +71,7 @@ class AddCity extends React.Component {
                 <input type="text"
                        placeholder="Enter city name"
                        className={cx('input-field')}
-                       value={this.state.cityName}
+                       value={this.props.inputText}
                        onChange={this.handleChangeCityName}/>
                 <button type='submit'
                         className={cx(this.getBtnClass())}
@@ -92,6 +87,7 @@ class AddCity extends React.Component {
 }
 
 export default connect(state => ({
-    fail: state.cities.fail,
-    isLoading: state.cities.isLoading
-}), {addCity, resetFail})(AddCity);
+    isLoading: state.cities.isLoading,
+    fail: state.addCityInput.fail,
+    inputText: state.addCityInput.text
+}), {addCity, resetFail, inputFill, resetAddInput})(AddCity);

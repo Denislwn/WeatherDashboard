@@ -1,4 +1,4 @@
-import {ADD_CITY, DELETE_CITY, RESET_FAIL} from '../constants';
+import {ADD_CITY, DELETE_CITY, END_LOADING, FAIL, RESET_FAIL} from '../constants';
 
 export function addCity(cityName) {
     return {
@@ -14,8 +14,8 @@ export function deleteCity(cityId) {
     }
 }
 
-export function resetFail() {
+export function endCityLoading() {
     return {
-        type: RESET_FAIL
+        type: END_LOADING
     }
 }
